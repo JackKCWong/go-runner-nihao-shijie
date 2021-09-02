@@ -24,7 +24,7 @@ func main() {
 
 	err := os.Remove(*unixsock)
 	if err != nil {
-		fmt.Printf("failed to remove in-use sock: %s, %q", *unixsock, err)
+		fmt.Printf("error removing socket: %s, %q\n", *unixsock, err)
 	}
 
 	listener, err := net.Listen("unix", *unixsock)
@@ -33,9 +33,9 @@ func main() {
 		os.Exit(1)
 	}
 
-
 	mux := http.NewServeMux()
 	mux.HandleFunc("/nihao", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Printf("incoming request: %q\n", req.RequestURI)
 		w.WriteHeader(200)
 		w.Write([]byte("nihao, 世界"))
 	})
